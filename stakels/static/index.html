@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stakels Test UI</title>
+</head>
+<body>
+<h1>Stakels Test UI</h1>
+<section>
+  <h2>Create User</h2>
+  <input id="username" placeholder="username">
+  <button onclick="createUser()">Create</button>
+  <pre id="createUserResult"></pre>
+</section>
+<section>
+  <h2>Create Bet</h2>
+  <input id="description" placeholder="description">
+  <input id="amount" placeholder="amount" type="number">
+  <input id="creator" placeholder="creator">
+  <input id="opponent" placeholder="opponent">
+  <button onclick="createBet()">Create Bet</button>
+  <pre id="createBetResult"></pre>
+</section>
+<section>
+  <h2>All Bets</h2>
+  <button onclick="fetchBets()">Refresh</button>
+  <pre id="betsResult"></pre>
+</section>
+<script>
+async function createUser() {
+  const username = document.getElementById('username').value;
+  const res = await fetch('/users', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({username})
+  });
+  document.getElementById('createUserResult').innerText = await res.text();
+}
+async function createBet() {
+  const data = {
+    description: document.getElementById('description').value,
+    amount: document.getElementById('amount').value,
+    creator: document.getElementById('creator').value,
+    opponent: document.getElementById('opponent').value
+  };
+  const res = await fetch('/bets', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  });
+  document.getElementById('createBetResult').innerText = await res.text();
+}
+async function fetchBets() {
+  const res = await fetch('/bets');
+  document.getElementById('betsResult').innerText = await res.text();
+}
+</script>
+</body>
+</html>
