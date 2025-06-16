@@ -1,8 +1,16 @@
-from flask import Flask, jsonify, request
+import os
+from flask import Flask, jsonify, request, send_from_directory
 from .app import BetManager
 
 app = Flask(__name__)
 manager = BetManager()
+BASE_DIR = os.path.dirname(__file__)
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
+
+@app.get('/')
+def index():
+    return send_from_directory(STATIC_DIR, 'index.html')
 
 @app.post('/users')
 def create_user():
